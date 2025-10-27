@@ -10,10 +10,11 @@ import SearchOverlay from './components/SearchOverlay';
 import AboutPage from './components/AboutPage';
 import ContactPage from './components/ContactPage';
 import AuthPage from './components/AuthPage';
+import DashboardPage from './components/DashboardPage';
 import { Product, CartItem, User } from './types';
 import { mockProducts } from './mockData';
 
-export type Page = 'home' | 'shop' | 'products' | 'about' | 'contact' | 'auth';
+export type Page = 'home' | 'shop' | 'products' | 'about' | 'contact' | 'auth' | 'dashboard';
 
 const App: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -141,6 +142,8 @@ const App: React.FC = () => {
         return <ContactPage />;
       case 'auth':
         return <AuthPage currentUser={currentUser} onLogin={handleLogin} onLogout={handleLogout} onNavigate={handleNavigate} />;
+      case 'dashboard':
+        return <DashboardPage allProducts={mockProducts} cartItems={cartItems} />;
       case 'home':
       default:
         return (

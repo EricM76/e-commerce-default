@@ -48,6 +48,7 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick, onSearchClick, 
             <button onClick={() => onNavigate('home')} className={navLinkClasses('home')}>Home</button>
             <button onClick={() => onNavigate('shop')} className={navLinkClasses('shop')}>Shop</button>
             <button onClick={() => onNavigate('products')} className={navLinkClasses('products')}>Products</button>
+            {isLoggedIn && <button onClick={() => onNavigate('dashboard')} className={navLinkClasses('dashboard')}>Dashboard</button>}
             <button onClick={() => onNavigate('about')} className={navLinkClasses('about')}>About</button>
             <button onClick={() => onNavigate('contact')} className={navLinkClasses('contact')}>Contact</button>
           </nav>
@@ -93,6 +94,7 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick, onSearchClick, 
             <button onClick={() => { onNavigate('home'); setIsMenuOpen(false); }} className={mobileNavLinkClasses('home')}>Home</button>
             <button onClick={() => { onNavigate('shop'); setIsMenuOpen(false); }} className={mobileNavLinkClasses('shop')}>Shop</button>
             <button onClick={() => { onNavigate('products'); setIsMenuOpen(false); }} className={mobileNavLinkClasses('products')}>Products</button>
+            {isLoggedIn && <button onClick={() => { onNavigate('dashboard'); setIsMenuOpen(false); }} className={mobileNavLinkClasses('dashboard')}>Dashboard</button>}
             <button onClick={() => { onNavigate('about'); setIsMenuOpen(false); }} className={mobileNavLinkClasses('about')}>About</button>
             <button onClick={() => { onNavigate('contact'); setIsMenuOpen(false); }} className={mobileNavLinkClasses('contact')}>Contact</button>
           </nav>
