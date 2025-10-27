@@ -1,19 +1,19 @@
 import React, { useState, FormEvent } from 'react';
-import { User } from '../types';
 
 interface LoginPageProps {
-  onLogin: (user: User) => void;
+  onLogin: (email: string) => boolean;
+  onRegister: (name: string, email: string) => boolean;
 }
 
 type AuthMode = 'login' | 'register';
 
-const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
+const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onRegister }) => {
   const [mode, setMode] = useState<AuthMode>('login');
   const [error, setError] = useState<string | null>(null);
 
   // Login state
-  const [loginEmail, setLoginEmail] = useState('');
-  const [loginPassword, setLoginPassword] = useState('');
+  const [loginEmail, setLoginEmail] = useState('test@test.com');
+  const [loginPassword, setLoginPassword] = useState('password');
 
   // Register state
   const [registerName, setRegisterName] = useState('');
@@ -24,9 +24,8 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   const handleLoginSubmit = (e: FormEvent) => {
     e.preventDefault();
     setError(null);
-    if (loginEmail === 'test@test.com') {
-      onLogin({ name: 'Test User', email: loginEmail });
-    } else {
+    const success = onLogin(loginEmail);
+    if (!success) {
       setError('Invalid email or password.');
     }
   };
@@ -42,12 +41,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
       setError('Passwords do not match.');
       return;
     }
-    if (registerEmail === 'test@test.com') {
+    const success = onRegister(registerName, registerEmail);
+    if (!success) {
         setError('An account with this email already exists.');
         return;
     }
-    // Mock registration success
-    onLogin({ name: registerName, email: registerEmail });
   };
   
   const switchMode = (newMode: AuthMode) => {
@@ -82,6 +80,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
           {mode === 'login' ? (
             <form onSubmit={handleLoginSubmit} className="space-y-6">
               <h2 className="text-2xl font-bold text-center text-gray-900">Welcome Back</h2>
+              <p className="text-center text-sm text-gray-500">Use <span className="font-mono">test@test.com</span> and any password to log in.</p>
               <div>
                 <label htmlFor="login-email" className="block text-sm font-medium text-gray-700">
                   Email address
@@ -101,7 +100,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
               </div>
 
               <div>
-                {/* FIX: Added missing className prop. */}
                 <label htmlFor="login-password" className="block text-sm font-medium text-gray-700">
                   Password
                 </label>
@@ -134,28 +132,24 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
              <form onSubmit={handleRegisterSubmit} className="space-y-6">
                 <h2 className="text-2xl font-bold text-center text-gray-900">Create an Account</h2>
                 <div>
-                    {/* FIX: Added missing className prop. */}
                     <label htmlFor="register-name" className="block text-sm font-medium text-gray-700">
                     Full Name
                     </label>
                     <input id="register-name" type="text" required value={registerName} onChange={(e) => setRegisterName(e.target.value)} className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm" />
                 </div>
                 <div>
-                    {/* FIX: Added missing className prop. */}
                     <label htmlFor="register-email" className="block text-sm font-medium text-gray-700">
                     Email address
                     </label>
                     <input id="register-email" type="email" required value={registerEmail} onChange={(e) => setRegisterEmail(e.target.value)} className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm" />
                 </div>
                 <div>
-                    {/* FIX: Added missing className prop. */}
                     <label htmlFor="register-password" className="block text-sm font-medium text-gray-700">
                     Password
                     </label>
                     <input id="register-password" type="password" required value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)} className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm" />
                 </div>
                 <div>
-                    {/* FIX: Added missing className prop. */}
                     <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700">
                     Confirm Password
                     </label>

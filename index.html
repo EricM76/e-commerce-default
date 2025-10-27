@@ -20,6 +20,42 @@
         -ms-overflow-style: none;  /* IE and Edge */
         scrollbar-width: none;  /* Firefox */
       }
+      /* Styles for Responsive Tables */
+      @media (max-width: 767px) {
+        .responsive-table thead {
+          display: none;
+        }
+        .responsive-table tbody,
+        .responsive-table tr,
+        .responsive-table td {
+          display: block;
+          width: 100%;
+        }
+        .responsive-table tr {
+          margin-bottom: 1rem;
+          border: 1px solid #ddd;
+          border-radius: 0.5rem;
+          overflow: hidden;
+        }
+        .responsive-table td {
+          padding-left: 50%;
+          position: relative;
+          text-align: right;
+          border-bottom: 1px solid #eee;
+        }
+        .responsive-table td:last-child {
+          border-bottom: 0;
+        }
+        .responsive-table td::before {
+          content: attr(data-label);
+          position: absolute;
+          left: 0;
+          width: 45%;
+          padding-left: 1rem;
+          font-weight: 600;
+          text-align: left;
+        }
+      }
     </style>
   <script type="importmap">
 {

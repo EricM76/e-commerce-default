@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
-import { Product, CartItem } from '../types';
+import { Product, CartItem, User } from '../types';
+import { Page } from '../App';
 import StatCard from './dashboard/StatCard';
 import DollarSignIcon from './icons/DollarSignIcon';
 import BoxIcon from './icons/BoxIcon';
@@ -11,9 +12,11 @@ import RecentActivityTable from './dashboard/RecentActivityTable';
 interface DashboardPageProps {
   allProducts: Product[];
   cartItems: CartItem[];
+  users: User[];
+  onNavigate: (page: Page) => void;
 }
 
-const DashboardPage: React.FC<DashboardPageProps> = ({ allProducts, cartItems }) => {
+const DashboardPage: React.FC<DashboardPageProps> = ({ allProducts, cartItems, users, onNavigate }) => {
   const totalPotentialRevenue = useMemo(() => {
     return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   }, [cartItems]);
@@ -23,8 +26,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ allProducts, cartItems })
      return cartItems.reduce((total, item) => total + item.quantity, 0);
   }, [cartItems]);
 
-  // Mocked data as we don't have a user database
-  const totalUsers = 1;
+  const totalUsers = users.length;
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -33,30 +35,38 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ allProducts, cartItems })
 
         {/* Stat Cards */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard 
-            title="Potential Revenue" 
-            value={`$${totalPotentialRevenue.toFixed(2)}`}
-            icon={<DollarSignIcon />}
-            color="green"
-          />
-          <StatCard 
-            title="Total Products" 
-            value={totalProducts}
-            icon={<BoxIcon />}
-            color="blue"
-          />
-          <StatCard 
-            title="Items in Carts" 
-            value={itemsInCarts}
-            icon={<ShoppingCartIcon />}
-            color="indigo"
-          />
-           <StatCard 
-            title="Active Users" 
-            value={totalUsers}
-            icon={<UsersIcon />}
-            color="purple"
-          />
+          <div onClick={() => onNavigate('dashboard-revenue')} className="cursor-pointer transition-transform transform hover:scale-105">
+            <StatCard 
+              title="Potential Revenue" 
+              value={`$${totalPotentialRevenue.toFixed(2)}`}
+              icon={<DollarSignIcon />}
+              color="green"
+            />
+          </div>
+          <div onClick={() => onNavigate('dashboard-products')} className="cursor-pointer transition-transform transform hover:scale-105">
+            <StatCard 
+              title="Manage Products" 
+              value={totalProducts}
+              icon={<BoxIcon />}
+              color="blue"
+            />
+          </div>
+          <div onClick={() => onNavigate('dashboard-activity')} className="cursor-pointer transition-transform transform hover:scale-105">
+            <StatCard 
+              title="Carts Activity" 
+              value={itemsInCarts}
+              icon={<ShoppingCartIcon />}
+              color="indigo"
+            />
+          </div>
+          <div onClick={() => onNavigate('dashboard-users')} className="cursor-pointer transition-transform transform hover:scale-105">
+            <StatCard 
+              title="Manage Users" 
+              value={totalUsers}
+              icon={<UsersIcon />}
+              color="purple"
+            />
+          </div>
         </div>
 
         {/* Charts and Tables */}

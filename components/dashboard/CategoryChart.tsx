@@ -18,9 +18,9 @@ const barColors = [
 
 const CategoryChart: React.FC<CategoryChartProps> = ({ products }) => {
   const categoryData = useMemo(() => {
-    // FIX: Use generic parameter on `reduce` to properly type the accumulator.
-    // This resolves incorrect type inference for `counts` which caused downstream type errors.
-    const counts = products.reduce<Record<string, number>>((acc, product) => {
+    // FIX: The generic parameter on `reduce` was causing an "Untyped function calls may not accept type arguments" error.
+    // Switched to typing the accumulator parameter in the callback function directly, which correctly infers the type for `counts` and resolves all downstream errors.
+    const counts = products.reduce((acc: Record<string, number>, product) => {
       acc[product.category] = (acc[product.category] || 0) + 1;
       return acc;
     }, {});
