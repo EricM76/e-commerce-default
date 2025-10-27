@@ -3,6 +3,7 @@ import ShoppingCartIcon from './icons/ShoppingCartIcon';
 import SearchIcon from './icons/SearchIcon';
 import MenuIcon from './icons/MenuIcon';
 import UserIcon from './icons/UserIcon';
+import UserLoggedInIcon from './icons/UserLoggedInIcon';
 import { Page } from '../App';
 
 
@@ -12,9 +13,10 @@ interface HeaderProps {
   onSearchClick: () => void;
   onNavigate: (page: Page) => void;
   currentPage: Page;
+  isLoggedIn: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick, onSearchClick, onNavigate, currentPage }) => {
+const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick, onSearchClick, onNavigate, currentPage, isLoggedIn }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   const navLinkClasses = (page: Page) => 
@@ -55,8 +57,8 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick, onSearchClick, 
             <button onClick={onSearchClick} className="text-gray-600 hover:text-gray-900 transition-colors" aria-label="Search">
               <SearchIcon />
             </button>
-            <button className="text-gray-600 hover:text-gray-900 transition-colors" aria-label="My Account">
-              <UserIcon />
+             <button onClick={() => onNavigate('auth')} className="text-gray-600 hover:text-gray-900 transition-colors" aria-label={isLoggedIn ? "My Account" : "Login"}>
+              {isLoggedIn ? <UserLoggedInIcon /> : <UserIcon />}
             </button>
             <div className="relative">
               <button

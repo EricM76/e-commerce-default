@@ -9,10 +9,11 @@ import ProductsPage from './components/ProductsPage';
 import SearchOverlay from './components/SearchOverlay';
 import AboutPage from './components/AboutPage';
 import ContactPage from './components/ContactPage';
-import { Product, CartItem } from './types';
+import AuthPage from './components/AuthPage';
+import { Product, CartItem, User } from './types';
 import { mockProducts } from './mockData';
 
-export type Page = 'home' | 'shop' | 'products' | 'about' | 'contact';
+export type Page = 'home' | 'shop' | 'products' | 'about' | 'contact' | 'auth';
 
 const App: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -21,6 +22,7 @@ const App: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [currentPage, setCurrentPage] = useState<Page>('home');
   const [favoritedIds, setFavoritedIds] = useState<number[]>([]);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   const handleToggleFavorite = (productId: number) => {
     setFavoritedIds(prev =>
@@ -83,6 +85,16 @@ const App: React.FC = () => {
     window.scrollTo(0, 0);
   }
 
+  const handleLogin = (user: User) => {
+    setCurrentUser(user);
+    handleNavigate('home');
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    handleNavigate('home');
+  };
+
   const cartCount = useMemo(() => {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
   }, [cartItems]);
@@ -127,6 +139,8 @@ const App: React.FC = () => {
         return <AboutPage onNavigate={handleNavigate} />;
       case 'contact':
         return <ContactPage />;
+      case 'auth':
+        return <AuthPage currentUser={currentUser} onLogin={handleLogin} onLogout={handleLogout} onNavigate={handleNavigate} />;
       case 'home':
       default:
         return (
@@ -145,6 +159,7 @@ const App: React.FC = () => {
         onSearchClick={toggleSearch}
         onNavigate={handleNavigate}
         currentPage={currentPage}
+        isLoggedIn={!!currentUser}
        />
       <main>
         {renderPage()}
